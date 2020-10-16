@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
+import NotificationManager from '../services/NotificationManager';
 
 const SearchScreen = () => {
   const [searchTerm, setSearchTerm] = useState('london');
@@ -17,7 +18,7 @@ const SearchScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   function onSearchTermChange(event) {
-    console.log(`Current: ${searchTerm}, Next: ${event.nativeEvent.text}`);
+    // console.log(`Current: ${searchTerm}, Next: ${event.nativeEvent.text}`);
     setSearchTerm(event.nativeEvent.text);
   }
 
@@ -35,6 +36,14 @@ const SearchScreen = () => {
         }, 2000);
         navigate('SearchResults', {data});
       });
+  }
+
+  function triggerNotificaction() {
+    NotificationManager.scheduleNotification({
+      title: 'Notifcaction title',
+      message: 'Notif message',
+      date: new Date(Date.now() + 5 * 1000),
+    });
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -64,6 +73,7 @@ const SearchScreen = () => {
           </>
         )}
       </View>
+      <Button title={'Send Notif'} onPress={triggerNotificaction} />
       <Image
         source={require('../assets/images/house.png')}
         style={styles.image}
